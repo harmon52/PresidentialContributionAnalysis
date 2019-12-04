@@ -121,16 +121,13 @@ ggplot(incumTransDF, aes(x = Party, y = LogAmount)) +
   ggtitle("Boxplots of Log of Donation Amount by Party")
 
 # NORMAL PROBABILITY PLOT
-incumTransDF$intercept <- ifelse(incumTransDF$Party == "Democrat",
-                                  xbar["Democrat"], xbar["Republican"])
-incumTransDF$slope <- ifelse(incumTransDF$Party == "Democrat",
-                             xbar["Democrat"], xbar["Republican"])
+incumTransDF$intercept <- apply(incumTransDF, 1, function(x){xbar[x["Party"]]})
+incumTransDF$slope <- apply(incumTransDF, 1, function(x){s[x["Party"]]})
 
 ggplot(incumTransDF, aes(sample = LogAmount)) +
   stat_qq() +
   facet_grid(Party ~ .) +
-  geom_abline(data = incumTransDF, aes(intercept = intercept,
-                                       slope = slope)) +
+  geom_abline(data = incumTransDF, aes(intercept = intercept,slope = slope)) +
   ggtitle("QQ Plots of Log of Donation Amount by Party")
 
 
@@ -140,8 +137,6 @@ ggplot(incumTransDF, aes(sample = LogAmount)) +
 t.test(incumTransDF$LogAmount ~ incumTransDF$Party, mu = 0, conf.level = 0.99,
        paired = FALSE, alternative = "two.sided", var.equal = FALSE)
 
-t.test(incumTransDF$LogAmount ~ incumTransDF$Party, mu = 0, conf.level = 0.99,
-       paired = FALSE, alternative = "less", var.equal = FALSE)
 
 # NOW IT'S TIME TO ANOVA
 
