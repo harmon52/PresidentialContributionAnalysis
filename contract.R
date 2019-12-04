@@ -237,5 +237,5 @@ fit <- aov(LogAmount ~ Candidate, data = repubTransDF)
 summary(fit)
 
 # Tukey
-TukeyHSD(fit, conf.level = 0.95)
-qtukey(0.95, 3, 529672 - 3)
+TukeyHSD(fit, conf.level = 0.99)
+qtukey(0.99, 3, 529672 - 3)
